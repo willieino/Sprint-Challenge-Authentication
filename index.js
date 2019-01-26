@@ -16,7 +16,7 @@ const jwtKey =  process.env.JWT_SECRET // 'add a .env file to root of project wi
 function protect(req, res, next) {
   const token = req.headers.authorization;
 
-  jwt.verify(token, jwtKey, (err, decodedToken) => {
+  jwt.verify(token, secret, (err, decodedToken) => {
     if (err) {
       res.status(401).json({ message: 'Invalid token'}); 
     } else {
@@ -81,6 +81,30 @@ server.post('/api/login', (req, res) => {
     res.status(500).send(err);
   });
 });
+
+
+server.get('/api/users', protect, (req, res) => {
+  db.findUsers()
+  .then(users => {
+    res.json(users);
+  })
+  .catch(err => {
+    res.status(500).send(err);
+  })
+});
+
+//*************************************************** */
+server.post('/api/logout', (req, res) => {
+  req.session.destroy(err => {
+    if (err) {
+      res.status(500).send('failed to logout');
+    } else {
+      res.send('logout successful');
+    }
+  });
+});
+
+
 const port = process.env.PORT || 3300;
 
 
