@@ -111,26 +111,13 @@ class App extends Component {
           for (let x = 0; x < response.data.length; x++) {
   console.log("response.data[x].username:", response.data[x].username)
             tmpArray.push(response.data[x].username)
-           //  tmpArray.push(tmpArray2[0])
+
           }
          
            this.setState(() => ({ userList: tmpArray }))
         })
 
-         
-      
-      
-      //  console.log('data from /api/users', response.data);
-      //  this.setState({ users: res.data })
-     // })
-      
-      //.then(response => {
-       // let tmpArray = [];
-       // for (let x = 0; x < response.data.length; x++) {
-       //   tmpArray.push(response.data[x].username)
-      //  }
-      //  this.setState(() => ({ userList: tmpArray }));
-      //})
+     
       .catch(error => {
         console.error('Server Error', error);
       });
