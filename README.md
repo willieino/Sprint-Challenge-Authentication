@@ -29,9 +29,23 @@ Implement an User Authentication System in order to access the jokes from the Jo
 Demonstrate your understanding of this week's concepts by answering the following free-form questions. Edit this document to include your answers after each question. Make sure to leave a blank line above and below your answer so it is clear and easy to read by your project manager.
 
 1. What is the purpose of using _sessions_?
-1. What does bcrypt do to help us store passwords in a secure manner.
-1. What does bcrypt do to slow down attackers?
-1. What are the three parts of the JSON Web Token?
+Sessions are used in node.js as a way of keeping users authenticated. By using a cookie. Cookies allow you to store a user’s information inside a file on their browser. The browser then sends that info back on every request, 
+allowing your application to identify the user and customize their experience. Which is objectively way better than asking for a username and password on every request. The session only persists for a predetermined amount of
+time. So after a while your session does expire. 
+
+2. What does bcrypt do to help us store passwords in a secure manner.
+Bcrypt runs a hashing algorithmn on our passwords and some other data. It stores the hash in a database instead of storing the actual password. You cannot retrieve your password from this hash. The only 
+thing you can do is run the same algorithmn on data the user enters and check to see if the hashes match. If a user forgets their password their only option is to reset it because there is no way to
+retrieve a password using this method. 
+
+3. What does bcrypt do to slow down attackers?
+Bcrypt allows the developer to modify the algorithmn used so that it takes longer and longer to do it's calculation. This makes the chance of them finding a match more difficult and adds to the time
+it takes to do the calculations. You can go from minutes to years to try and make a match or create a rainbow table. 
+
+4. What are the three parts of the JSON Web Token?
+Part1: header,
+Part2: data or payload
+Part3: signature
 
 ## Project Set Up
 
