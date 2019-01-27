@@ -22,7 +22,7 @@ class App extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-   handleSubmit = event => {
+  handleSubmit = event => {
     event.preventDefault();
     const credentials = this.state;
     const endpoint = 'http://localhost:3300/api/login';
@@ -50,7 +50,7 @@ class App extends Component {
       };
       const endpoint = 'http://localhost:3300/api/login';
       axios
-      .post('http://localhost:3300/api/login', userInfo)
+        .post('http://localhost:3300/api/login', userInfo)
         .then(res => {
           console.log('reponse data from login', res.data);
           localStorage.setItem('jwt', res.data.token);
@@ -102,90 +102,44 @@ class App extends Component {
         Authorization: token
       }
     };
-     axios
+    axios
       .get('http://localhost:3300/api/users/', options)
-     
-        .then(response => {
-          console.log("response.data", response.data)
-          let tmpArray = [];
-          for (let x = 0; x < response.data.length; x++) {
-  console.log("response.data[x].username:", response.data[x].username)
-            tmpArray.push(response.data[x].username)
 
-          }
-         
-           this.setState(() => ({ userList: tmpArray }))
-        })
-
-     
+      .then(response => {
+        let tmpArray = [];
+        for (let x = 0; x < response.data.length; x++) { 
+          tmpArray.push(response.data[x].username)
+        }
+        this.setState(() => ({ userList: tmpArray }))
+      })
       .catch(error => {
         console.error('Server Error', error);
       });
-    }
-     
-jokeList = (e) => {
-  e.preventDefault();
-  const requestOptions = {
-    headers: { accept: 'application/json' },
-  };
-  axios
-  .get('http://localhost:3300/api/jokes/', requestOptions)
- 
-    .then(response => {
-      console.log("response.data", response.data)
-      let tmpArray = [];
-    //  response.status(200).json(response.data.results);
-    for (let x = 0; x < response.data.length; x++) {
-      console.log("response.data[x].username:", response.data[x].username)
-                tmpArray.push(response.data[x].joke)
-    
-              }
-             
-               this.setState(() => ({ userList: tmpArray }))
-  
-  
-  
-  
-  
-  })
-    .catch(err => {
-      console.error('Server Error', err);
-    });
-  
-  
-      //function getJokes(req, res) {
-    //const requestOptions = {
-     // headers: { accept: 'application/json' },
-    //};
-  
- /*    axios
-      .get('https://icanhazdadjoke.com/search', requestOptions)
-      .then(response => {
-        res.status(200).json(response.data.results); */
-     
-  
+  }
 
-  
- 
-  
- 
- 
- 
-/*   const endpoint = 'http://localhost:3300/api/jokes';
-axios.get(endpoint)
-.then(response => {
-  console.log("response.data", response.data.results)
-  response.status(200).json(response.data.results);
-})
-  .catch(error => {
-    console.error('Server Error', error);
-  });
- */
-}
+  jokeList = (e) => {
+    e.preventDefault();
+    const requestOptions = {
+      headers: { accept: 'application/json' },
+    };
+    axios
+      .get('http://localhost:3300/api/jokes/', requestOptions)
+      .then(response => {
+        let tmpArray = [];   
+        for (let x = 0; x < response.data.length; x++) {    
+          tmpArray.push(response.data[x].joke)
+        }
+        this.setState(() => ({ userList: tmpArray }))
+      })
+      .catch(err => {
+        console.error('Server Error', err);
+      });
+
+  }
 
 
   // ***************** USER LOGOUT **************************
- 
+
   logout = (e) => {
     e.preventDefault();
     localStorage.removeItem('jwt')
@@ -214,13 +168,13 @@ axios.get(endpoint)
         </header>
         <div className="container-1">
           <div className="text"><p>This app uses web tokens to register,login. It also
-            allows the user to display a protected list of users. </p> </div>
+            allows the user to display a protected list of users and a list of Dad Jokes. </p> </div>
           <form className="main-form" onSubmit={this.login}>
             <Input type="text" id="username" value={this.state.username} name='username' className="form-control" placeholder="Enter Username" onChange={this.handleInputChange} />
             <Input type="text" id="password" value={this.state.password} name='password' className="form-control" placeholder="Enter Password" onChange={this.handleInputChange} />
-          
-            <button className="btn-register" value="register" onClick={this.register} name="viewHome" id="register">Register</button>
-            <button type="submit" className="btn-login" value="login" onSubmit={this.login} name="viewHome" id="login">Login</button>
+
+            <button className="btn-register" value="register" onClick={this.register} name="viewHome" id="register">Sign Up</button>
+            <button type="submit" className="btn-login" value="login" onSubmit={this.login} name="viewHome" id="login">Sign In</button>
             <button className={btnClass} disabled={this.state.disabled} value="user-list" id="user-list" onClick={this.userList} name="viewHome">User List</button>
             <button className={btnClass} disabled={this.state.disabled} value="joke-list" id="joke-list" onClick={this.jokeList} name="viewHome">Joke List</button>
             <button className={btnClass} disabled={this.state.disabled} value="logout" id="logout" onClick={this.logout} name="viewHome">Logout</button>

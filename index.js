@@ -12,7 +12,6 @@ const server = express();
 const secret = 'shhhthisissecret';
 const jwtKey = process.env.JWT_SECRET // 'add a .env file to root of project with the JWT_SECRET variable
 
-
 // custom middleware
 function protect(req, res, next) {
   const token = req.headers.authorization;
@@ -25,6 +24,7 @@ function protect(req, res, next) {
     }
   });
 }
+
 //************************************************** */
 function generateToken(user) {
   const payload = {
@@ -46,7 +46,6 @@ server.get('/', (req, res) => {
 //******************************************************* */
 server.post('/api/register', (req, res) => {
   const user = req.body;
-  console.log("user", user)
   user.password = bcrypt.hashSync(user.password, 10);
   db.insert(user)
     .then(ids => {
@@ -65,16 +64,10 @@ server.post('/api/login', (req, res) => {
   const creds = req.body;
   db.findByUsername(creds.username)
     .then(user => {
-      // username valid   hash from client == hash from db
       if (user && bcrypt.compareSync(creds.password, user.password)) {
         const token = generateToken(user)
-        console.log("successful login")
-        // redirect
         res.json({ id: user.id, token });
-
-      } else {
-        // we send back info that allows the front end 
-        // to display a new error message
+      } else {      
         res.status(404).json({ err: "invalid username or password" });
       }
     })
@@ -82,7 +75,6 @@ server.post('/api/login', (req, res) => {
       res.status(500).send(err);
     });
 });
-
 
 server.get('/api/users', protect, (req, res) => {
   db.findUsers()
@@ -105,7 +97,7 @@ server.post('/api/logout', (req, res) => {
   });
 });
 
-function getJokes(req, res) {
+/* function getJokes(req, res) {
   const requestOptions = {
     headers: { accept: 'application/json' },
   };
@@ -118,13 +110,12 @@ function getJokes(req, res) {
     .catch(err => {
       res.status(500).json({ message: 'Error Fetching Jokes', error: err });
     });
-}
+} */
 
 server.get('/api/jokes', (req, res) => {
   const requestOptions = {
     headers: { accept: 'application/json' },
   };
-
   axios
     .get('https://icanhazdadjoke.com/search', requestOptions)
     .then(response => {
@@ -135,13 +126,7 @@ server.get('/api/jokes', (req, res) => {
     });
 });
 
-
 const port = process.env.PORT || 3300;
-
-
-
-
-
 
 server.listen(port, () => {
   console.log(`\n=== Server listening on port ${port}\n`);
