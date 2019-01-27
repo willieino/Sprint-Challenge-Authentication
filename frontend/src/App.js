@@ -106,7 +106,7 @@ class App extends Component {
       .get('http://localhost:3300/api/users/', options)
      
         .then(response => {
-          console.log("reponse.data", response.data)
+          console.log("response.data", response.data)
           let tmpArray = [];
           for (let x = 0; x < response.data.length; x++) {
   console.log("response.data[x].username:", response.data[x].username)
@@ -123,8 +123,69 @@ class App extends Component {
       });
     }
      
+jokeList = (e) => {
+  e.preventDefault();
+  const requestOptions = {
+    headers: { accept: 'application/json' },
+  };
+  axios
+  .get('http://localhost:3300/api/jokes/', requestOptions)
+ 
+    .then(response => {
+      console.log("response.data", response.data)
+      let tmpArray = [];
+    //  response.status(200).json(response.data.results);
+    for (let x = 0; x < response.data.length; x++) {
+      console.log("response.data[x].username:", response.data[x].username)
+                tmpArray.push(response.data[x].joke)
+    
+              }
+             
+               this.setState(() => ({ userList: tmpArray }))
+  
+  
+  
+  
+  
+  })
+    .catch(err => {
+      console.error('Server Error', err);
+    });
+  
+  
+      //function getJokes(req, res) {
+    //const requestOptions = {
+     // headers: { accept: 'application/json' },
+    //};
+  
+ /*    axios
+      .get('https://icanhazdadjoke.com/search', requestOptions)
+      .then(response => {
+        res.status(200).json(response.data.results); */
+     
+  
+
+  
+ 
+  
+ 
+ 
+ 
+/*   const endpoint = 'http://localhost:3300/api/jokes';
+axios.get(endpoint)
+.then(response => {
+  console.log("response.data", response.data.results)
+  response.status(200).json(response.data.results);
+})
+  .catch(error => {
+    console.error('Server Error', error);
+  });
+ */
+}
+
 
   // ***************** USER LOGOUT **************************
+ 
   logout = (e) => {
     e.preventDefault();
     localStorage.removeItem('jwt')
@@ -161,11 +222,12 @@ class App extends Component {
             <button className="btn-register" value="register" onClick={this.register} name="viewHome" id="register">Register</button>
             <button type="submit" className="btn-login" value="login" onSubmit={this.login} name="viewHome" id="login">Login</button>
             <button className={btnClass} disabled={this.state.disabled} value="user-list" id="user-list" onClick={this.userList} name="viewHome">User List</button>
+            <button className={btnClass} disabled={this.state.disabled} value="joke-list" id="joke-list" onClick={this.jokeList} name="viewHome">Joke List</button>
             <button className={btnClass} disabled={this.state.disabled} value="logout" id="logout" onClick={this.logout} name="viewHome">Logout</button>
 
           </form>
           <div className="message" onClick={this.message}><p>Click Here if you forgot your password.</p> </div>
-          <div className={btnClass}>New User List:{this.state.userList.map((user, index) => {
+          <div className={btnClass}>Joke List:{this.state.userList.map((user, index) => {
             return <User user={user} key={index} />;
           })}
           </div>
