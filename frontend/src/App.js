@@ -22,23 +22,21 @@ class App extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleSubmit = event => {
+ /*  handleSubmit = event => {
     event.preventDefault();
     const credentials = this.state;
     const endpoint = 'http://localhost:3300/api/login';
     axios.post(endpoint, credentials)
-      .then(res => {
-        console.log('reponse data from login', res.data);
+      .then(res => { 
         localStorage.setItem('jwt', res.data.token);
         alert("login successful")
         const name = "";
         const password = "";
         this.setState({ username: name, password: password })
-        console.log("this.state is: ", this.state)
       }).catch(err => {
         console.log('err from login', err);
       });
-  }
+  } */
   // ********* USER LOGIN **************************
   login = (e) => {
     e.preventDefault();
@@ -52,7 +50,6 @@ class App extends Component {
       axios
         .post('http://localhost:3300/api/login', userInfo)
         .then(res => {
-          console.log('reponse data from login', res.data);
           localStorage.setItem('jwt', res.data.token);
           alert('Login successful...')
           const passWord = "";
@@ -103,7 +100,7 @@ class App extends Component {
       }
     };
     axios
-      .get('http://localhost:3300/api/users/', options)
+    .get('http://localhost:3300/api/users/', options)
 
       .then(response => {
         let tmpArray = [];
@@ -117,6 +114,7 @@ class App extends Component {
       });
   }
 
+  // ************ GET JOKE LIST *******************
   jokeList = (e) => {
     e.preventDefault();
     const requestOptions = {
@@ -137,9 +135,7 @@ class App extends Component {
 
   }
 
-
   // ***************** USER LOGOUT **************************
-
   logout = (e) => {
     e.preventDefault();
     localStorage.removeItem('jwt')
@@ -167,8 +163,9 @@ class App extends Component {
           </div>
         </header>
         <div className="container-1">
-          <div className="text"><p>This app uses web tokens to register,login. It also
-            allows the user to display a protected list of users and a list of Dad Jokes. </p> </div>
+          <div className="text"><p>This app uses web tokens to Sign Up and Sign In. It also
+            allows the user to display a protected list of users and a list of Dad Jokes.
+            And finally, it allows you to Logout. </p> </div>
           <form className="main-form" onSubmit={this.login}>
             <Input type="text" id="username" value={this.state.username} name='username' className="form-control" placeholder="Enter Username" onChange={this.handleInputChange} />
             <Input type="text" id="password" value={this.state.password} name='password' className="form-control" placeholder="Enter Password" onChange={this.handleInputChange} />
@@ -181,7 +178,7 @@ class App extends Component {
 
           </form>
           <div className="message" onClick={this.message}><p>Click Here if you forgot your password.</p> </div>
-          <div className={btnClass}>Joke List:{this.state.userList.map((user, index) => {
+          <div className={btnClass}>Dad Joke List:{this.state.userList.map((user, index) => {
             return <User user={user} key={index} />;
           })}
           </div>
